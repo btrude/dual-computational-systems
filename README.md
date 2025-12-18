@@ -71,7 +71,7 @@ Generate the olfaction dataset with the following script:
 pipenv run python dual_computational_systems/data/generation/create_olfaction_dataset.py
 ```
 
-## Evolutionary Algorithm
+# Evolutionary Algorithm
 The evolutionary algorithm runs in two stages, first we train all mutations of the neural networks and cache the results of each. The number of epochs that each mutation is trained on can be modified with the `--n-epochs` command line flag and the total number of units to be divided amongst the different modalities can be controled with the `--model-base-channels` flag. We recommend running this portion of the algorithm with a CUDA-enabled GPU and the `--device cuda` flag.
 
 ```sh
