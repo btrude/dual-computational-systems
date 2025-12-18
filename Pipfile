@@ -16,7 +16,6 @@ tensorboard = "*"
 scikit-learn = "*"
 torchmetrics = "*"
 torchcodec = "*"
-datasets = "*"
 chcochleagram = {git = "git+https://github.com/jenellefeather/chcochleagram.git"}
 
 [dev-packages]
