@@ -317,7 +317,9 @@ def main(
             mutation_results[int(mutation)]["s"] = acc_s
             mutation_results[int(mutation)]["o"] = acc_o
             mutation_results[int(mutation)]["h"] = acc_h
-            tqdm.write(json.dumps(mutation_results[int(mutation)], indent=4, default=str))
+
+            if verbose:
+                tqdm.write(json.dumps(mutation_results[int(mutation)], indent=4, default=str))
 
         mutations_cache_out_path = Path(CACHE_DIR) / f"mutations_cache_{str(uuid.uuid4())[:8]}.json"
         print(f"Mutations cache saved at: {mutations_cache_out_path}")
