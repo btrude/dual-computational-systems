@@ -293,12 +293,22 @@ def train(
                     loss_s = criterion(outputs_s, labels_s)
                     loss_o = criterion(outputs_o, labels_o)
                     loss_h = bce_loss(outputs_h, labels_h)
-                    loss = loss_v + loss_a + loss_s + loss_o + loss_h
+                    loss_v.backward()
+                    loss_a.backward()
+                    loss_s.backward()
+                    loss_o.backward()
+                    loss_h.backward()
+                    loss = (
+                        loss_v.item()
+                        + loss_a.item()
+                        + loss_s.item()
+                        + loss_o.item()
+                        + loss_h.item()
+                    )
 
                 else:
                     loss = criterion(outputs, labels)
-
-                loss.backward()
+                    loss.backward()
 
             if should_clip_grad_norm:
                 gn = clip_grad_norm(model.parameters(), max_grad_norm)
@@ -314,10 +324,15 @@ def train(
             current_lr = f"{scheduler.get_last_lr()[0]:.4f}"
             optimizer.zero_grad()
 
-            pbar.set_postfix({"loss": loss.item(), "gn": gn.item(), "lr": current_lr})
+            if isinstance(loss, t.Tensor):
+                log_loss = loss.item()
+            else:
+                log_loss = loss
+
+            pbar.set_postfix({"loss": log_loss, "gn": gn.item(), "lr": current_lr})
 
             if writer is not None:
-                writer.add_scalar("train/loss", loss.item(), global_step=scheduler.last_epoch)
+                writer.add_scalar("train/loss", log_loss, global_step=scheduler.last_epoch)
                 writer.add_scalar("train/gradient_norm", gn.item(), global_step=scheduler.last_epoch)
                 writer.add_scalar("train/learning_rate", float(current_lr), global_step=scheduler.last_epoch)
 

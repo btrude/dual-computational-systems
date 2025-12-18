@@ -224,7 +224,7 @@ def get_mutation_pcts(
         )
 
     save_path = Path(CACHE_DIR) / f"mutation_pcts_{str(uuid.uuid4())[:8]}.json"
-    print(f"Mutation \\%s saved to {save_path}")
+    print(f"Mutation percents saved at: {save_path}")
 
     with open(save_path, "w") as json_file:
         json.dump(mutation_pcts, json_file, indent=4, default=str)
@@ -250,12 +250,12 @@ def random_choice_exclude_mask(values, size, exclude=None):
 
 
 def main(
-    n_epochs=10,
+    n_epochs=50,
+    model_base_channels=315,
     n_generations=25,
     population_size=55,
     k_fit=15,
     mutation_sample_width=8,
-    model_base_channels=315,
     mutations_sparsity=1,
     mutations_cache_path=None,
     mutation_pcts_cache_path=None,
@@ -264,7 +264,7 @@ def main(
     allowed_mutation_drift=25,
     lr=0.01,
     dist_network_sparsity=0.4,
-    device="cuda:0",
+    device="cpu",
     verbose=False,
 ):
     set_seed(12345)
@@ -319,7 +319,10 @@ def main(
             mutation_results[int(mutation)]["h"] = acc_h
             tqdm.write(json.dumps(mutation_results[int(mutation)], indent=4, default=str))
 
-        with open(Path(CACHE_DIR) / f"mutations_cache_{str(uuid.uuid4())[:8]}.json", "w") as json_file:
+        mutations_cache_out_path = Path(CACHE_DIR) / f"mutations_cache_{str(uuid.uuid4())[:8]}.json"
+        print(f"Mutations cache saved at: {mutations_cache_out_path}")
+
+        with open(mutations_cache_out_path, "w") as json_file:
             json.dump(mutation_results, json_file, indent=4, default=str)
 
     if mutations_cache_path is None:
