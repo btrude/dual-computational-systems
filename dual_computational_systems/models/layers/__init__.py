@@ -1,0 +1,2 @@
+from dual_computational_systems.models.layers.distributed import DistributedLinear
+from dual_computational_systems.models.layers.locally_connected_2d import LocallyConnected2d

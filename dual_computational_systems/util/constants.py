@@ -1,0 +1,7 @@
+CIFAR10_PATH = "./datasets/cifar10"
+HIPPOCAMPUS_DATASET_PATH = "./datasets/hippocampus"
+AUDITION_DATASET_PATH = "./datasets/fsd50k_cochleagram"
+OLFACTION_DATASET_PATH = "./datasets/olfaction"
+SOMATOSENSATION_DATASET_PATH = "./datasets/tactile_glove/classification"
+CACHE_DIR = "./cache"
+OUTPUT_DIR= "./outputs"
