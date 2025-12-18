@@ -1,0 +1,4 @@
+from dual_computational_systems.data.datasets.audition import AuditionDataset
+from dual_computational_systems.data.datasets.hippocampus import HippocampusDataset
+from dual_computational_systems.data.datasets.olfaction import OlfactionDataset
+from dual_computational_systems.data.datasets.somatosensation import SomatosensationDataset
