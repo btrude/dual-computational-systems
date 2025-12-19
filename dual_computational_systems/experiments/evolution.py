@@ -143,8 +143,8 @@ class MultimodalDataset(Dataset):
         return x, (y, t.tensor(y_h))
 
 
-def fitness(r, v, o):
-    return (r * v) + ((1 - r) * o)
+def fitness(s, v, o):
+    return (s * v) + ((1 - s) * o)
 
 
 def load_mutations_cache(mutations_cache_path):
@@ -268,7 +268,7 @@ def main(
     verbose=False,
 ):
     set_seed(12345)
-    R = np.arange(0.025, 1, 0.025)
+    S = np.arange(0.025, 1, 0.025)
     mutations = np.arange(2, model_base_channels - 2, mutations_sparsity)
     mutation_results = defaultdict(dict)
 
@@ -330,11 +330,11 @@ def main(
     if mutations_cache_path is None:
         exit()
 
-    R_plot_line = []
+    S_plot_line = []
     mutations_v_line = []
     mutations_o_line = []
 
-    R_plot_scatter = []
+    S_plot_scatter = []
     mutations_v_scatter = []
     mutations_h_scatter = []
     mutations_o_scatter = []
@@ -359,7 +359,7 @@ def main(
         window_o = window
         window_orig = window
 
-        for r in tqdm(R, desc="r ∈ R"):
+        for s in tqdm(S, desc="s ∈ S"):
             iter_mutations_v = np.random.choice(
                 list(range(*window)),
                 size=population_size,
@@ -412,7 +412,7 @@ def main(
                 cohort_v = mutations_cache[:1, mutations[iter_mutations_v], last_avail_epoch]
                 cohort_o = mutations_cache[3:4, mutations[iter_mutations_o], last_avail_epoch]
 
-                last_fit = fitness(r, cohort_v, cohort_o)
+                last_fit = fitness(s, cohort_v, cohort_o)
                 _, survivors = t.topk(last_fit, k_fit)
                 iter_mutations_v = iter_mutations_v[survivors.squeeze()]
                 iter_mutations_o = iter_mutations_o[survivors.squeeze()]
@@ -451,18 +451,18 @@ def main(
 
                 mutations_v_line.append(mutation_vision)
                 mutations_o_line.append(mutation_olfaction)
-                R_plot_line.append(r)
+                S_plot_line.append(r)
 
                 if i < max_survivors_scatter:
                     mutations_v_scatter.append(mutation_vision)
                     mutations_h_scatter.append(mutation_hippocampus)
                     mutations_o_scatter.append(mutation_olfaction)
-                    R_plot_scatter.append(r)
+                    S_plot_scatter.append(r)
 
         window = window_orig
 
     df = pd.DataFrame({
-        "R": R_plot_scatter,
+        "S": S_plot_scatter,
         "Vision": mutations_v_scatter,
         "Olfaction": mutations_o_scatter,
     })
@@ -470,7 +470,7 @@ def main(
     num_categories = 5
     bins = np.linspace(0, 1, num_categories + 1)
     labels = [f"{bins[i]:.1f} - {bins[i+1]:.1f}" for i in range(len(bins) - 1)]
-    df["R_cat"] = pd.cut(df["R"], bins=bins, labels=labels, include_lowest=True)
+    df["S_cat"] = pd.cut(df["S"], bins=bins, labels=labels, include_lowest=True)
 
     markers_list = ["o", "s", "D", "^", "H"]
     markers_dict = dict(zip(labels, markers_list))
@@ -482,7 +482,7 @@ def main(
 
     legend_handles = []
     for category in labels:
-        mask = df["R_cat"] == category
+        mask = df["S_cat"] == category
         plt.scatter(
             df.loc[mask, "Olfaction"],
             df.loc[mask, "Vision"],
@@ -536,18 +536,18 @@ def main(
     plt.close()
 
     df = pd.DataFrame({
-        "R": R_plot_scatter,
+        "S": S_plot_scatter,
         "Hippocampus": mutations_h_scatter,
         "Olfaction": mutations_o_scatter,
     })
 
-    df["R_cat"] = pd.cut(df["R"], bins=bins, labels=labels, include_lowest=True)
+    df["S_cat"] = pd.cut(df["S"], bins=bins, labels=labels, include_lowest=True)
 
     plt.figure(figsize=(10, 8))
 
     legend_handles = []
     for category in labels:
-        mask = df["R_cat"] == category
+        mask = df["S_cat"] == category
         plt.scatter(
             df.loc[mask, "Olfaction"],
             df.loc[mask, "Hippocampus"],
