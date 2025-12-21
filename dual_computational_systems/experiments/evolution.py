@@ -451,13 +451,13 @@ def main(
 
                 mutations_v_line.append(mutation_vision)
                 mutations_o_line.append(mutation_olfaction)
-                S_plot_line.append(r)
+                S_plot_line.append(s)
 
                 if i < max_survivors_scatter:
                     mutations_v_scatter.append(mutation_vision)
                     mutations_h_scatter.append(mutation_hippocampus)
                     mutations_o_scatter.append(mutation_olfaction)
-                    S_plot_scatter.append(r)
+                    S_plot_scatter.append(s)
 
         window = window_orig
 
@@ -597,7 +597,7 @@ def main(
     plt.yticks(font=hn, fontsize=30)
     plt.tight_layout()
     os.makedirs(OUTPUT_DIR, exist_ok=True)
-    plt.savefig(Path(OUTPUT_DIR) / "evo_hippo.png", bbox_inches="tight", dpi=300)
+    plt.savefig(Path(OUTPUT_DIR) / "evo_hippocampus.png", bbox_inches="tight", dpi=300)
     plt.close()
 
 
