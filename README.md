@@ -1,12 +1,12 @@
 # Installation
 
-This project uses `pipenv` for package management with `python 3.10.11`. Ensure that pipenv is installed and then run the following command
+This project uses `pipenv` for package management with `python 3.10.11`. Ensure that pipenv is installed and then run the following command:
 
 ```sh
 pipenv install
 ```
 
-A CUDA-enabled GPU with at least 12gb of VRAM is recommended for running the code in this repository.
+A CUDA-enabled GPU with at least 12gb of VRAM is recommended for running the code in this repository. The experiments included in the paper used an Nvidia RTX 4090 and with a runtime of around 48 hours.
 
 # Datasets
 The audition and somatosensation datasets are provided by `Freesound` and `MIT` respectively and both require additional preprocessing before they can be used. The olfaction and hippocampus datasets are generated using scripts provided in this repository.
