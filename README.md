@@ -6,7 +6,7 @@ This project uses `pipenv` for package management with `python 3.10.11`. Ensure 
 pipenv install
 ```
 
-A CUDA-enabled GPU with at least 12gb of VRAM is recommended for running the code in this repository. The experiments included in the paper used an Nvidia RTX 4090 and with a runtime of around 48 hours.
+A CUDA-enabled GPU with at least 12gb of VRAM is recommended for running the code in this repository. The experiments included in the paper used an Nvidia RTX 4090 with a runtime of around 48 hours to fully train the evolutionary algorithm.
 
 # Datasets
 The audition and somatosensation datasets are provided by `Freesound` and `MIT` respectively and both require additional preprocessing before they can be used. The olfaction and hippocampus datasets are generated using scripts provided in this repository.
